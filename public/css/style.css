@@ -1,0 +1,43 @@
+@charset "UTF-8";
+
+body {
+  margin: 0;
+  padding: 0;
+  font-size: 16px;
+}
+
+header {
+  display: flex;
+  height: 150px;
+  width: 100vw;
+  align-items: center;
+  justify-content: center;
+  background-color: steelblue;
+}
+
+header h1 {
+  color: #fff;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 3rem;
+}
+
+main {
+  width: 100vw;
+  height: calc(100vh - 150px - 75px);
+}
+
+footer {
+  display: flex;
+  width: 100vw;
+  height: 75px;
+  align-items: center;
+  justify-content: center;
+  background-color: steelblue;
+}
+
+footer span {
+  color: #fff;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 1.25rem;
+  font-weight: bold;
+}

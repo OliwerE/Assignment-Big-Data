@@ -1,13 +1,13 @@
 /**
- * Module represents Temp Controller
+ * Module represents elastic search controller.
  */
 
 import createError from 'http-errors'
 
 /**
- * Class represents auth controller.
+ * Class represents elastic search controller.
  */
-export class TempController {
+export class ElasticSearchController {
   index (req, res, next) {
     try {
       res.render('body/startPage')
