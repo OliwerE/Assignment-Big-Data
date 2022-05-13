@@ -9,7 +9,6 @@
     "start:dev": "nodemon --inspect -r dotenv/config src/server.js",
     "lint": "npx eslint ./src || exit 0",
     "lint:fix": "npx eslint ./src --fix || exit 0"
-
   },
   "repository": {
     "type": "git",
@@ -18,7 +17,9 @@
   "author": "Oliwer Ellréus",
   "license": "ISC",
   "dependencies": {
+    "@elastic/elasticsearch": "^8.2.0-patch.1",
     "cors": "^2.8.5",
+    "d3": "^7.4.4",
     "express": "^4.17.1",
     "express-hbs": "^2.4.0",
     "helmet": "^4.4.1",

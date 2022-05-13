@@ -21,6 +21,8 @@ async function run () {
   app.use(express.urlencoded({ extended: false }))
   app.use(express.static(join(fullDirName, '..', 'public')))
 
+  app.use(logger('dev'))
+
   app.use('/', router)
 
   app.use((err, req, res, next) => {
