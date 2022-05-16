@@ -3,8 +3,6 @@
  */
 
 import createError from 'http-errors'
-import { Client } from '@elastic/elasticsearch'
-import fs from 'fs'
 
 /**
  * Class represents API controller.
@@ -20,32 +18,39 @@ export class ApiController {
    */
   async ownersPerGame (req, res, next, client) {
     try {
-      const names = ['0-20000', '20-50000', '50000-100000', '100000-200000', '200000-500000', 'Other']
-      const values = [18596, 3059, 1695, 1386, 1272, 1067]
+      const bars = ['0-20000', '20000-50000', '50000-100000', '100000-200000', '200000-500000', '500000+']
+      const values = []
 
-
-      // ToDo get data from elastic
-
-
-      res.json({ barName: names, barValue: values })
-    } catch (err) {
-      next(createError(500))
-    }
-  }
-
-  async index (req, res, next, client) {
-    try {
-      const result = await client.search({
-        index: 'steam',
-        query: {
-          match: {
-            name: 'counter strike'
+      // Get values of all intervals except 500 000+
+      for (let i = 0; i < (bars.length - 1); i++) { // -1 because 500 000+ is not an owners interval in elastic.
+        const res = await client.count({
+          index: 'steam',
+          query: {
+            match: {
+              owners: bars[i]
+            }
           }
-        }
+        })
+        values.push(res.count)
+      }
+
+      // Get sum of intervals above 500 000.
+      let valuesSum = 0
+      values.forEach(s => {
+        valuesSum += s
       })
-      res.json({ result: result.hits.hits })
-      // client.count() // count documents
+
+      // Add interval 500 000+
+      const gameCount = await client.count({
+        index: 'steam'
+      })
+      values.push(gameCount.count - valuesSum)
+
+      // console.log(values)
+
+      res.json({ barName: bars, barValue: values })
     } catch (err) {
+      console.log(err)
       next(createError(500))
     }
   }

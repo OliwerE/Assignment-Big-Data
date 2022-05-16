@@ -23,12 +23,14 @@ function createChart (json) {
     data: {
       labels: barName,
       datasets: [{
+        label: 'Number of games',
         backgroundColor: barColors,
         data: barValue
       }]
     },
     options: {
       plugins: {
+        legend: { display: false },
         title: {
           display: true,
           text: 'Number of game owners per game'
