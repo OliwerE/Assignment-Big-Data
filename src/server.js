@@ -8,8 +8,20 @@ import { router } from './routes/router.js'
 
 async function run () {
   const app = express()
-  
-  app.use(helmet())
+
+  // app.use(helmet())
+  app.use(helmet({
+    contentSecurityPolicy: {
+      directives: {
+        ...helmet.contentSecurityPolicy.getDefaultDirectives(),
+        'default-src': ['http://localhost:8080/', 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/'],
+        'script-src': ['http://localhost:8080/', 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/']
+      }
+    },
+    crossOriginResourcePolicy: { policy: 'cross-origin' },
+    crossOriginEmbedderPolicy: false
+  })
+  )
   
   const fullDirName = dirname(fileURLToPath(import.meta.url))
   app.engine('hbs', hbs.express4({

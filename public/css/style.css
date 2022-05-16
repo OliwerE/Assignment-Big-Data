@@ -8,7 +8,7 @@ body {
 
 header {
   display: flex;
-  height: 150px;
+  height: 100px;
   width: 100vw;
   align-items: center;
   justify-content: center;
@@ -22,8 +22,15 @@ header h1 {
 }
 
 main {
+  display: flex;
+  justify-content: center;
   width: 100vw;
-  height: calc(100vh - 150px - 75px);
+  min-height: calc(100vh - 100px - 75px);
+}
+
+#chart {
+  max-width: 900px;
+  max-height: 600px;
 }
 
 footer {

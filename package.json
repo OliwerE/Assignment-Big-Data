@@ -19,7 +19,6 @@
   "dependencies": {
     "@elastic/elasticsearch": "^8.2.0-patch.1",
     "cors": "^2.8.5",
-    "d3": "^7.4.4",
     "express": "^4.17.1",
     "express-hbs": "^2.4.0",
     "helmet": "^4.4.1",

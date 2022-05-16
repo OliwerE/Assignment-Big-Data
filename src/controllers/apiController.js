@@ -28,4 +28,13 @@ export class ApiController {
       next(createError(500))
     }
   }
+
+  async testData (req, res, next, client) {
+    try {
+      const data = [100, 50, 300, 40, 350, 250]
+      res.json(data)
+    } catch (err) {
+      next(createError(500))
+    }
+  }
 }
