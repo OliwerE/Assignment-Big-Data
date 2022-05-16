@@ -18,37 +18,78 @@ export class ApiController {
    */
   async ownersPerGame (req, res, next, client) {
     try {
-      const bars = ['0-20000', '20000-50000', '50000-100000', '100000-200000', '200000-500000', '500000+']
-      const values = []
+      const intervals = ['0-20000', '20000-50000', '50000-100000', '100000-200000', '200000-500000', '500000+']
+      const intervalValues = []
 
       // Get values of all intervals except 500 000+
-      for (let i = 0; i < (bars.length - 1); i++) { // -1 because 500 000+ is not an owners interval in elastic.
-        const res = await client.count({
+      for (let i = 0; i < (intervals.length - 1); i++) { // -1 because 500 000+ is not an owners interval in elastic.
+        const intervalValue = await client.count({
           index: 'steam',
           query: {
             match: {
-              owners: bars[i]
+              owners: intervals[i]
             }
           }
         })
-        values.push(res.count)
+        intervalValues.push(intervalValue.count)
       }
 
-      // Get sum of intervals above 500 000.
-      let valuesSum = 0
-      values.forEach(s => {
-        valuesSum += s
+      const aboveIntervals = await client.count({
+        index: 'steam',
+        query: {
+          bool: {
+            must_not: [
+              {
+                terms: {
+                  owners: [
+                    '0-20000',
+                    '20000-50000',
+                    '50000-100000',
+                    '100000-200000',
+                    '200000-500000'
+                  ]
+                }
+              }
+            ]
+          }
+        }
       })
 
-      // Add interval 500 000+
-      const gameCount = await client.count({
-        index: 'steam'
+      intervalValues.push(aboveIntervals.count)
+
+      res.json({ barName: intervals, barValue: intervalValues })
+    } catch (err) {
+      console.log(err)
+      next(createError(500))
+    }
+  }
+
+  async test (req, res, next, client) {
+    try {
+      const response = await client.count({
+        index: 'steam',
+        query: {
+          bool: {
+            must_not: [
+              {
+                terms: {
+                  owners: [
+                    '0-20000',
+                    '20000-50000',
+                    '50000-100000',
+                    '100000-200000',
+                    '200000-500000'
+                  ]
+                }
+              }
+            ]
+          }
+        }
       })
-      values.push(gameCount.count - valuesSum)
 
-      // console.log(values)
+      console.log(response)
 
-      res.json({ barName: bars, barValue: values })
+      res.json(response)
     } catch (err) {
       console.log(err)
       next(createError(500))
