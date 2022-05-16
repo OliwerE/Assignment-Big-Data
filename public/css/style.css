@@ -19,6 +19,7 @@ header h1 {
   color: #fff;
   font-family: 'Courier New', Courier, monospace;
   font-size: 3rem;
+  text-align: center;
 }
 
 main {
@@ -35,11 +36,15 @@ main {
 
 footer {
   display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
   width: 100vw;
-  height: 75px;
+  min-height: 75px;
+  height: fit-content;
   align-items: center;
   justify-content: center;
   background-color: steelblue;
+  text-align: center;
 }
 
 footer span {
@@ -47,4 +52,8 @@ footer span {
   font-family: 'Courier New', Courier, monospace;
   font-size: 1.25rem;
   font-weight: bold;
+}
+
+footer span a {
+  color: #0000ff;
 }
