@@ -14,8 +14,8 @@ async function run () {
     contentSecurityPolicy: {
       directives: {
         ...helmet.contentSecurityPolicy.getDefaultDirectives(),
-        'default-src': ['http://localhost:8080/', 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/'],
-        'script-src': ['http://localhost:8080/', 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/']
+        'default-src': ['http://localhost:8080/', 'http://localhost:5001/', 'https://cscloud8-125.lnu.se/', 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/'],
+        'script-src': ['http://localhost:8080/', 'http://localhost:5001/', 'https://cscloud8-125.lnu.se/', 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/']
       }
     },
     crossOriginResourcePolicy: { policy: 'cross-origin' },
