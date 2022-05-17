@@ -27,6 +27,20 @@ export async function createBarChart () {
       }]
     },
     options: {
+      scales: {
+        y: {
+          title: {
+            display: true,
+            text: 'Antal spel'
+          }
+        },
+        x: {
+          title: {
+            display: true,
+            text: 'Antal sålda spel'
+          }
+        }
+      },
       plugins: {
         legend: { display: false },
         title: {
