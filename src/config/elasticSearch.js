@@ -1,6 +1,6 @@
 import { Client } from '@elastic/elasticsearch'
 
-export const client = new Client({
+export const elasticClient = new Client({
   cloud: {
     id: process.env.ELASTIC_CLOUD_ID
   },

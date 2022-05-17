@@ -14,16 +14,16 @@ export class ApiController {
    * @param {object} req - Request object.
    * @param {object} res - Response object.
    * @param {Function} next - Next function.
-   * @param {object} client - Elastic search client.
+   * @param {object} elasticClient - Elastic search client.
    */
-  async ownersPerGame (req, res, next, client) {
+  async ownersPerGame (req, res, next, elasticClient) {
     try {
       const intervals = ['0-20000', '20000-50000', '50000-100000', '100000-200000', '200000-500000', '500000+']
       const intervalValues = []
 
       // Get values of all intervals except 500 000+
       for (let i = 0; i < (intervals.length - 1); i++) { // -1 because 500 000+ is not an owners interval in elastic.
-        const intervalValue = await client.count({
+        const intervalValue = await elasticClient.count({
           index: 'steam',
           query: {
             match: {
@@ -34,7 +34,7 @@ export class ApiController {
         intervalValues.push(intervalValue.count)
       }
 
-      const aboveIntervals = await client.count({
+      const aboveIntervals = await elasticClient.count({
         index: 'steam',
         query: {
           bool: {
@@ -64,14 +64,22 @@ export class ApiController {
     }
   }
 
-  async gamePrices (req, res, next, client) {
+  /**
+   * Returns all game prices in intervals.
+   *
+   * @param {object} req - Request object.
+   * @param {object} res - Response object.
+   * @param {Function} next - Next function.
+   * @param {object} elasticClient - Elastic search client.
+   */
+  async gamePrices (req, res, next, elasticClient) {
     try {
       const intervalName = ['0.0', '0.01-1.00', '1.01-10.00', '10.01-20.00', '20.01-30', '30+']
       const intervalValue = []
 
       for (let i = 0; i < intervalName.length; i++) {
         if (i === 0) { // Free games (0.0 eur)
-          const response = await client.count({
+          const response = await elasticClient.count({
             index: 'steam',
             query: {
               match: {
@@ -82,7 +90,7 @@ export class ApiController {
           console.log(response)
           intervalValue.push(response.count)
         } else if (i === (intervalName.length - 1)) {
-          const response = await client.count({
+          const response = await elasticClient.count({
             index: 'steam',
             query: {
               range: {
@@ -97,7 +105,7 @@ export class ApiController {
         } else {
           const minMaxValues = intervalName[i].split('-')
 
-          const response = await client.count({
+          const response = await elasticClient.count({
             index: 'steam',
             query: {
               range: {

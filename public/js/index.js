@@ -13,6 +13,11 @@ fetch('/api/owners-per-game').then(res => {
   console.error(err)
 })
 
+/**
+ * Creates bar chart showing number of sold games.
+ *
+ * @param {JSON} json - Chart data.
+ */
 function createBarChart (json) {
   const { barName, barValue } = json
 
@@ -55,6 +60,11 @@ fetch('/api/game-prices').then(res => {
   console.error(err)
 })
 
+/**
+ * Creates pie chart showing game prices.
+ *
+ * @param {JSON} json - Chart data.
+ */
 function createPieChart (json) {
   const { intervalName, intervalValue } = json
   console.log(intervalName)

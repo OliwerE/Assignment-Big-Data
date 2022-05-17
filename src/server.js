@@ -6,6 +6,9 @@ import { fileURLToPath } from 'url'
 import hbs from 'express-hbs'
 import { router } from './routes/router.js'
 
+/**
+ * Express server configuration.
+ */
 async function run () {
   const app = express()
 
@@ -22,7 +25,7 @@ async function run () {
     crossOriginEmbedderPolicy: false
   })
   )
-  
+
   const fullDirName = dirname(fileURLToPath(import.meta.url))
   app.engine('hbs', hbs.express4({
     defaultLayout: join(fullDirName, 'views', 'layouts', 'default'),
