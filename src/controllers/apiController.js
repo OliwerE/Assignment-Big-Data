@@ -34,7 +34,8 @@ export class ApiController {
         intervalValues.push(intervalValue.count)
       }
 
-      const aboveIntervals = await elasticClient.count({
+      // Count 500 000+ games
+      const numberOfGamesAboveIntervals = await elasticClient.count({
         index: 'steam',
         query: {
           bool: {
@@ -54,12 +55,9 @@ export class ApiController {
           }
         }
       })
-
-      intervalValues.push(aboveIntervals.count)
-
+      intervalValues.push(numberOfGamesAboveIntervals.count)
       res.json({ barName: intervals, barValue: intervalValues })
     } catch (err) {
-      console.log(err)
       next(createError(500))
     }
   }
@@ -87,9 +85,8 @@ export class ApiController {
               }
             }
           })
-          console.log(response)
           intervalValue.push(response.count)
-        } else if (i === (intervalName.length - 1)) {
+        } else if (i === (intervalName.length - 1)) { // Above 30 eur games.
           const response = await elasticClient.count({
             index: 'steam',
             query: {
@@ -100,7 +97,6 @@ export class ApiController {
               }
             }
           })
-          console.log(response)
           intervalValue.push(response.count)
         } else {
           const minMaxValues = intervalName[i].split('-')
@@ -116,14 +112,11 @@ export class ApiController {
               }
             }
           })
-          console.log(response)
           intervalValue.push(response.count)
         }
       }
-
       res.json({ intervalName, intervalValue })
     } catch (err) {
-      console.log(err)
       next(createError(500))
     }
   }

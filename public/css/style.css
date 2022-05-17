@@ -12,7 +12,7 @@ header {
   width: 100vw;
   align-items: center;
   justify-content: center;
-  background-color: steelblue;
+  background-color: #4682b4;
 }
 
 header h1 {
@@ -43,7 +43,7 @@ footer {
   height: fit-content;
   align-items: center;
   justify-content: center;
-  background-color: steelblue;
+  background-color: #4682b4;
   text-align: center;
 }
 
