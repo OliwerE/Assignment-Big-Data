@@ -12,7 +12,6 @@ import { router } from './routes/router.js'
 async function run () {
   const app = express()
 
-  // app.use(helmet())
   app.use(helmet({
     contentSecurityPolicy: {
       directives: {
