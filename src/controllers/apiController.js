@@ -9,14 +9,14 @@ import createError from 'http-errors'
  */
 export class ApiController {
   /**
-   * Returns Number of game owners per game in each interval.
+   * Returns number of sold games in intervals.
    *
    * @param {object} req - Request object.
    * @param {object} res - Response object.
    * @param {Function} next - Next function.
    * @param {object} elasticClient - Elastic search client.
    */
-  async ownersPerGame (req, res, next, elasticClient) {
+  async numberOfSoldGames (req, res, next, elasticClient) {
     try {
       const intervals = ['0-20000', '20000-50000', '50000-100000', '100000-200000', '200000-500000', '500000+']
       const intervalValues = []
