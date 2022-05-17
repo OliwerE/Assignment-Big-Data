@@ -11,6 +11,6 @@ export const router = express.Router()
 const controller = new ApiController()
 
 router.get('/owners-per-game', (req, res, next) => controller.ownersPerGame(req, res, next, client))
-router.get('/test', (req, res, next) => controller.test(req, res, next, client))
+router.get('/game-prices', (req, res, next) => controller.gamePrices(req, res, next, client))
 
 router.use('*', (req, res, next) => next(createError(404)))

@@ -1,30 +1,35 @@
 import 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js'
 
-const myChart = document.querySelector('#chart')
+const barChart = document.querySelector('#bar-chart')
+const pieChart = document.querySelector('#pie-chart')
 
-// const barName = ['0-20000', '20-50000', '50000-100000', '100000-200000', '200000-500000', 'Other']
-// const barValue = [18596, 3059, 1695, 1386, 1272, 1067]
-const barColors = ['red', 'green', 'blue', 'orange', 'brown', 'purple']
+// bar chart
 
 fetch('/api/owners-per-game').then(res => {
   return res.json()
 }).then(json => {
-  createChart(json)
+  createBarChart(json)
 }).catch(err => {
   console.error(err)
 })
 
-function createChart (json) {
+function createBarChart (json) {
   const { barName, barValue } = json
 
   // eslint-disable-next-line no-unused-vars, no-undef
-  const chart = new Chart(myChart, {
+  const chart = new Chart(barChart, {
     type: 'bar',
     data: {
       labels: barName,
       datasets: [{
-        label: 'Number of games',
-        backgroundColor: barColors,
+        label: 'Antal spel',
+        backgroundColor: [
+          'red',
+          'green',
+          'blue',
+          'orange',
+          'brown',
+          'purple'],
         data: barValue
       }]
     },
@@ -33,7 +38,48 @@ function createChart (json) {
         legend: { display: false },
         title: {
           display: true,
-          text: 'Number of game owners per game'
+          text: 'Antal sålda spel'
+        }
+      }
+    }
+  })
+}
+
+// pie chart
+
+fetch('/api/game-prices').then(res => {
+  return res.json()
+}).then(json => {
+  createPieChart(json)
+}).catch(err => {
+  console.error(err)
+})
+
+function createPieChart (json) {
+  const { intervalName, intervalValue } = json
+  console.log(intervalName)
+  // eslint-disable-next-line no-unused-vars, no-undef
+  const chart = new Chart(pieChart, {
+    type: 'pie',
+    data: {
+      labels: intervalName,
+      datasets: [{
+        backgroundColor: [
+          'red',
+          'green',
+          'blue',
+          'orange',
+          'brown',
+          'purple'],
+        data: intervalValue
+      }]
+    },
+    options: {
+      plugins: {
+        legend: { display: true },
+        title: {
+          display: true,
+          text: 'Spel priser (Euro)'
         }
       }
     }

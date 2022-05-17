@@ -64,32 +64,56 @@ export class ApiController {
     }
   }
 
-  async test (req, res, next, client) {
+  async gamePrices (req, res, next, client) {
     try {
-      const response = await client.count({
-        index: 'steam',
-        query: {
-          bool: {
-            must_not: [
-              {
-                terms: {
-                  owners: [
-                    '0-20000',
-                    '20000-50000',
-                    '50000-100000',
-                    '100000-200000',
-                    '200000-500000'
-                  ]
+      const intervalName = ['0.0', '0.01-1.00', '1.01-10.00', '10.01-20.00', '20.01-30', '30+']
+      const intervalValue = []
+
+      for (let i = 0; i < intervalName.length; i++) {
+        if (i === 0) { // Free games (0.0 eur)
+          const response = await client.count({
+            index: 'steam',
+            query: {
+              match: {
+                price: '0.0'
+              }
+            }
+          })
+          console.log(response)
+          intervalValue.push(response.count)
+        } else if (i === (intervalName.length - 1)) {
+          const response = await client.count({
+            index: 'steam',
+            query: {
+              range: {
+                price: {
+                  gte: '30.01'
                 }
               }
-            ]
-          }
+            }
+          })
+          console.log(response)
+          intervalValue.push(response.count)
+        } else {
+          const minMaxValues = intervalName[i].split('-')
+
+          const response = await client.count({
+            index: 'steam',
+            query: {
+              range: {
+                price: {
+                  gte: minMaxValues[0], // 0 = min value
+                  lte: minMaxValues[1] // 1 = max value
+                }
+              }
+            }
+          })
+          console.log(response)
+          intervalValue.push(response.count)
         }
-      })
+      }
 
-      console.log(response)
-
-      res.json(response)
+      res.json({ intervalName, intervalValue })
     } catch (err) {
       console.log(err)
       next(createError(500))
